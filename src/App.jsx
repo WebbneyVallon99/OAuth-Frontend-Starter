@@ -13,6 +13,7 @@ import { auth0Config } from "./auth0-config";
 const AppContent = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  //const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const {
     isAuthenticated,
     user: auth0User,
@@ -28,9 +29,16 @@ const AppContent = () => {
   // Handle Auth0 authentication
   useEffect(() => {
     if (isAuthenticated && auth0User) {
+      console.log("Auth User:", auth0User);
       handleAuth0Login();
+      //  setUser(prev => ({
+      //   ...prev,
+      //   picture: auth0User.picture,
+      //   username: auth0User.nickname || auth0User.email?.split("@")[0]
+      // }));
     }
   }, [isAuthenticated, auth0User]);
+
 
   const handleAuth0Login = async () => {
     try {
@@ -128,6 +136,17 @@ const AppContent = () => {
                 {user ? (
                   <div>
                     <h2>Welcome, {user.username}!</h2>
+                    {isAuthenticated && auth0User?.picture && (
+                      <img
+                        src={auth0User.picture}
+                        alt="Profile"
+                        style={{
+                          width: "500px",
+                          height: "500px",
+                          margin: "px",
+                        }}
+                      />
+                    )}
                     <p>You are logged in.</p>
                     {user.auth0Id && <p>Authenticated via Auth0</p>}
                   </div>
